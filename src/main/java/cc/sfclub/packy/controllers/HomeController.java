@@ -34,8 +34,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HomeController {
-    @GetMapping(value = "/api/v1/")
-    public String welcome() {
-        return "Welcome to Packy Server.";
-    }
+
+  @GetMapping
+  public String welcome() {
+    return "Welcome to Packy Server.";
+  }
+
 }

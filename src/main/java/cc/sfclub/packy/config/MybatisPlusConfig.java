@@ -34,11 +34,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author TODAY
- * @date 2020/9/10 11:45
+ * @author TODAY 2020/9/10 11:45
  */
 @Configuration(proxyBeanMethods = false)
-@MapperScan("com.tap2up.heritage.mapper")
+@MapperScan("cc.sfclub.packy.mapper")
 public class MybatisPlusConfig {
 
   /**

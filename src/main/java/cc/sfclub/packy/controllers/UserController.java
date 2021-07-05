@@ -23,15 +23,34 @@
  *
  */
 
-package cc.sfclub.packy.daos;
+package cc.sfclub.packy.controllers;
 
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import cc.sfclub.packy.ex.NotFoundException;
+import cc.sfclub.packy.mapper.UserMapper;
+import cc.sfclub.packy.model.UserInfo;
 
 /**
- * @author EvanLuo42
- * @date 2021/7/5 8:30 下午
+ * @author EvanLuo42 2021/7/5 11:51
  */
-@Mapper
-public interface PackagesTable {
+@RestController
+@RequestMapping("/user")
+public class UserController {
 
+  @Autowired
+  private UserMapper userMapper;
+
+  @GetMapping(value = "/{id}")
+  public UserInfo getUserById(@PathVariable int id) {
+    UserInfo userInfo = userMapper.getUserById(id);
+    if (userInfo == null) {
+      throw new NotFoundException("用户不存在");
+    }
+    return userInfo;
+  }
 }

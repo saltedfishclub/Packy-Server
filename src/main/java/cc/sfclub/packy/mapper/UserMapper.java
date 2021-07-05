@@ -23,30 +23,20 @@
  *
  */
 
-package cc.sfclub.packy.controllers;
+package cc.sfclub.packy.mapper;
 
-import cc.sfclub.packy.Json;
-import cc.sfclub.packy.Permission;
-import cc.sfclub.packy.daos.UserTable;
 import cc.sfclub.packy.model.UserInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/5 11:51
+ * @date 2021/7/5 8:42 下午
  */
-@RestController
-public class UserContoller {
-    @Autowired
-    private UserTable userTable;
+@Mapper
+public interface UserMapper {
 
-    @GetMapping(value = "/api/v1/user/")
-    public Json getUserById(@RequestParam(value = "id") int id) {
-        UserInfo userInfo = userTable.getUserById(id);
-
-        return Json.ok("Get User Successfully", userInfo);
-    }
+  @Select("SELECT user_name,user_join_time,user_publish_pkgs,user_bio,user_email,user_perm FROM packy_users WHERE user_id = #{id}")
+  UserInfo getUserById(int id);
 }

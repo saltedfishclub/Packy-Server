@@ -6,6 +6,7 @@ server:
   servlet:
     session:
       persistent: true
+    context-path: '/api/v1'
 #      timeout: 12h
 
 spring:

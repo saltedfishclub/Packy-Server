@@ -23,18 +23,15 @@
  *
  */
 
-package cc.sfclub.packy.daos;
+package cc.sfclub.packy.mapper;
 
-import cc.sfclub.packy.model.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/5 8:42 下午
+ * @date 2021/7/5 8:30 下午
  */
 @Mapper
-public interface UserTable {
-    @Select("SELECT user_name,user_join_time,user_publish_pkgs,user_bio,user_email,user_perm FROM packy_users WHERE user_id = #{id}")
-    UserInfo getUserById(int id);
+public interface PackagesMapper {
+
 }
