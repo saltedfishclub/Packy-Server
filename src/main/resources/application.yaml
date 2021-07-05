@@ -1,0 +1,41 @@
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    session:
+      persistent: true
+#      timeout: 12h
+
+spring:
+  datasource:
+    username: root
+    password: "root"
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://192.168.1.103:3306/cultural-heritage?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&serverTimezone=GMT"
+    hikari:
+      maximumPoolSize: 10
+      minimumIdle: 2
+      idleTimeout: 600000
+      connectionTimeout: 30000
+      maxLifetime: 1800000
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  profiles:
+    active: dev
+    servlet:
+      multipart:
+        max-request-size: 10TB
+        max-file-size: 1TB
+
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+    cache-enabled: true
+    use-deprecated-executor: false
+logging:
+  level:
+    root: debug

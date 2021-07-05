@@ -1,0 +1,12 @@
+
+logging:
+  level:
+    root: info
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    password: "88888888"
+    url: "jdbc:mysql://localhost:3306/packy?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&serverTimezone=GMT"
