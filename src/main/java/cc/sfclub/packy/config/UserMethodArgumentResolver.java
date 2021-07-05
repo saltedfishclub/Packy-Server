@@ -34,7 +34,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import cc.sfclub.packy.Constant;
 import cc.sfclub.packy.annotation.RequiresUser;
 import cc.sfclub.packy.ex.UnauthorizedException;
-import cc.sfclub.packy.model.User;
+import cc.sfclub.packy.model.UserInfo;
 
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_SESSION;
 
@@ -45,7 +45,7 @@ public class UserMethodArgumentResolver implements HandlerMethodArgumentResolver
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
-    return parameter.getParameterType() == User.class;
+    return parameter.getParameterType() == UserInfo.class;
   }
 
   @Override

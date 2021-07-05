@@ -20,22 +20,33 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
-package cc.sfclub.packy;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package cc.sfclub.packy.controllers;
+
+import cc.sfclub.packy.Json;
+import cc.sfclub.packy.Permission;
+import cc.sfclub.packy.daos.UserTable;
+import cc.sfclub.packy.model.UserInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author TODAY
+ * @author EvanLuo42
+ * @date 2021/7/5 11:51
  */
-@SpringBootApplication
-@MapperScan(basePackages = {"cc.sfclub.packy.daos"})
-public class PackyServerApplication {
+@RestController
+public class UserContoller {
+    @Autowired
+    private UserTable userTable;
 
-  public static void main(String[] args) {
-    SpringApplication.run(PackyServerApplication.class, args);
-  }
+    @GetMapping(value = "/api/v1/user/")
+    public Json getUserById(@RequestParam(value = "id") int id) {
+        UserInfo userInfo = userTable.getUserById(id);
 
+        return Json.ok("Get User Successfully", userInfo);
+    }
 }

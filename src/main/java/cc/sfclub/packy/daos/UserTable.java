@@ -20,22 +20,21 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
-package cc.sfclub.packy;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package cc.sfclub.packy.daos;
+
+import cc.sfclub.packy.model.UserInfo;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
- * @author TODAY
+ * @author EvanLuo42
+ * @date 2021/7/5 8:42 下午
  */
-@SpringBootApplication
-@MapperScan(basePackages = {"cc.sfclub.packy.daos"})
-public class PackyServerApplication {
-
-  public static void main(String[] args) {
-    SpringApplication.run(PackyServerApplication.class, args);
-  }
-
+@Mapper
+public interface UserTable {
+    @Select("SELECT user_name,user_join_time,user_publish_pkgs,user_bio,user_email,user_perm FROM packy_users WHERE user_id = #{id}")
+    UserInfo getUserById(int id);
 }

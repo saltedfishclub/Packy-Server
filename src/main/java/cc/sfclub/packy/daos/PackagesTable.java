@@ -23,10 +23,15 @@
  *
  */
 
-package cc.sfclub.packy.model;
+package cc.sfclub.packy.daos;
+
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @author TODAY 2021/7/5 12:55
+ * @author EvanLuo42
+ * @date 2021/7/5 8:30 下午
  */
-public class User {
+@Mapper
+public interface PackagesTable {
+
 }

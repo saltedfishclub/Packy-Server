@@ -25,7 +25,7 @@
 
 package cc.sfclub.packy.controllers;
 
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -34,8 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HomeController {
-    @PostMapping("/api/v1/")
-    String welcome() {
+    @GetMapping(value = "/api/v1/")
+    public String welcome() {
         return "Welcome to Packy Server.";
     }
 }

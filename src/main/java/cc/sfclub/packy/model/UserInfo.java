@@ -20,22 +20,34 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
-package cc.sfclub.packy;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package cc.sfclub.packy.model;
+
+import cc.sfclub.packy.Permission;
+import lombok.Builder;
+import org.springframework.context.annotation.Bean;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author TODAY
+ * @date 2021/7/5 12:55
  */
-@SpringBootApplication
-@MapperScan(basePackages = {"cc.sfclub.packy.daos"})
-public class PackyServerApplication {
-
-  public static void main(String[] args) {
-    SpringApplication.run(PackyServerApplication.class, args);
-  }
-
+@Builder
+public class UserInfo {
+    /** 用户名 */
+    public String name;
+    /** 注册时间*/
+    public Date joinTime;
+    /** 发布的包 */
+    public List<PackageInfo> publishedPackages;
+    /** 个人简介 */
+    public String bio;
+    /** 邮箱 */
+    public String email;
+    /** 权限 */
+    public Permission permissionLevel;
 }

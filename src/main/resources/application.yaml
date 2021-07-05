@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 1009
   error:
     whitelabel:
       enabled: false
@@ -11,7 +11,7 @@ server:
 spring:
   datasource:
     username: root
-    password: "root"
+    password: "packy_mysql"
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://localhost:3306/packy?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&serverTimezone=GMT"
@@ -33,7 +33,6 @@ spring:
 
 mybatis-plus:
   configuration:
-    default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
     cache-enabled: true
     use-deprecated-executor: false
 

@@ -8,5 +8,5 @@ spring:
     restart:
       enabled: true
   datasource:
-    password: "88888888"
+    password: "packy_mysql"
     url: "jdbc:mysql://localhost:3306/packy?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&serverTimezone=GMT"
