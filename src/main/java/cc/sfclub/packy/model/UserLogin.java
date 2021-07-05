@@ -23,22 +23,18 @@
  *
  */
 
-package cc.sfclub.packy.daos;
+package cc.sfclub.packy.model;
 
-import cc.sfclub.packy.model.UserInfo;
-import cc.sfclub.packy.model.UserLogin;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import lombok.Builder;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/5 8:42 下午
+ * @date 2021/7/5 9:51 下午
  */
-@Mapper
-public interface UserTable {
-    @Select("SELECT user_name,user_join_time,user_publish_pkgs,user_bio,user_email,user_perm FROM packy_users WHERE user_id = #{id}")
-    UserInfo getUserById(int id);
-
-    @Select("SELECT user_name,user_pass WHERE user_name = #{user}")
-    UserLogin login(String user);
+@Builder
+public class UserLogin {
+    /** 用户名 */
+    public String user;
+    /** 密码 */
+    public String pass;
 }

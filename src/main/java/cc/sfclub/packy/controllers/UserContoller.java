@@ -29,10 +29,9 @@ import cc.sfclub.packy.Json;
 import cc.sfclub.packy.Permission;
 import cc.sfclub.packy.daos.UserTable;
 import cc.sfclub.packy.model.UserInfo;
+import cc.sfclub.packy.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author EvanLuo42
@@ -48,5 +47,13 @@ public class UserContoller {
         UserInfo userInfo = userTable.getUserById(id);
 
         return Json.ok("Get User Successfully", userInfo);
+    }
+
+    @PostMapping(value = "/api/v1/login")
+    public Json login(@RequestBody UserLogin body) {
+        UserLogin userLogin = userTable.login(body.user);
+        if(userLogin != null) {
+            if(userLogin.pass.equals())
+        }
     }
 }
