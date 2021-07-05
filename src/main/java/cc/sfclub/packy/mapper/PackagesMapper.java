@@ -23,21 +23,15 @@
  *
  */
 
-package cc.sfclub.packy.controllers;
+package cc.sfclub.packy.mapper;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/5 11:51
+ * @date 2021/7/5 8:30 下午
  */
-@RestController
-public class HomeController {
-
-  @GetMapping
-  public String welcome() {
-    return "Welcome to Packy Server.";
-  }
+@Mapper
+public interface PackagesMapper {
 
 }

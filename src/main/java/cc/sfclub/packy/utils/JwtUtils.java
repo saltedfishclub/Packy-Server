@@ -73,7 +73,7 @@ public class JwtUtils {
      * @Param [username, secret]
      * @Return java.lang.String
      */
-    public static String sign(String username, Permission userperm, String secret) {
+    public static String sign(String username, String userperm, String secret) {
         Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(secret);
 

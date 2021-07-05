@@ -23,15 +23,14 @@
  *
  */
 
-package cc.sfclub.packy.daos;
-
-import org.apache.ibatis.annotations.Mapper;
+package cc.sfclub.packy.model;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/5 8:30 下午
+ * @date 2021/7/5 10:18 下午
  */
-@Mapper
-public interface PackagesTable {
-
+public class JwtDetail {
+    public String user_name;
+    public String user_pass;
+    public String user_perm;
 }

@@ -130,10 +130,7 @@ public class ApplicationExceptionHandler {
    * 不记录日志
    */
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler({
-                            ApplicationException.class,
-                            IllegalArgumentException.class,
-                    })
+  @ExceptionHandler({ ApplicationException.class, IllegalArgumentException.class, })
   public ErrorMessage badRequest(Exception exception) {
     return ErrorMessage.failed(exception.getMessage());
   }
@@ -151,11 +148,9 @@ public class ApplicationExceptionHandler {
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler({
-          MultipartException.class,
-          HttpMessageNotReadableException.class,
-          HttpMediaTypeNotSupportedException.class
-  })
+  @ExceptionHandler({ MultipartException.class,
+                            HttpMessageNotReadableException.class,
+                            HttpMediaTypeNotSupportedException.class })
   public ErrorMessage messageNotReadable() {
     return argsErrorMessage;
   }

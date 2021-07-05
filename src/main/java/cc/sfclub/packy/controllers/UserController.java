@@ -25,35 +25,57 @@
 
 package cc.sfclub.packy.controllers;
 
-import cc.sfclub.packy.Json;
-import cc.sfclub.packy.Permission;
-import cc.sfclub.packy.daos.UserTable;
+import cc.sfclub.packy.ex.UnauthorizedException;
+import cc.sfclub.packy.mapper.UserMapper;
+import cc.sfclub.packy.model.JwtDetail;
 import cc.sfclub.packy.model.UserInfo;
 import cc.sfclub.packy.model.UserLogin;
+import cc.sfclub.packy.utils.EncryptUtils;
+import cc.sfclub.packy.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import cc.sfclub.packy.ex.NotFoundException;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * @author EvanLuo42
- * @date 2021/7/5 11:51
+ * @author EvanLuo42 2021/7/5 11:51
  */
 @RestController
-public class UserContoller {
-    @Autowired
-    private UserTable userTable;
+@RequestMapping("/user")
+public class UserController {
 
-    @GetMapping(value = "/api/v1/user/")
-    public Json getUserById(@RequestParam(value = "id") int id) {
-        UserInfo userInfo = userTable.getUserById(id);
+  @Autowired
+  private UserMapper userMapper;
 
-        return Json.ok("Get User Successfully", userInfo);
+  @GetMapping(value = "/{id}")
+  public UserInfo getUserById(@PathVariable int id) {
+    UserInfo userInfo = userMapper.getUserById(id);
+
+    if (userInfo == null) {
+      throw new NotFoundException("用户不存在");
     }
 
-    @PostMapping(value = "/api/v1/login")
-    public Json login(@RequestBody UserLogin body) {
-        UserLogin userLogin = userTable.login(body.user);
-        if(userLogin != null) {
-            if(userLogin.pass.equals())
-        }
-    }
+    return userInfo;
+  }
+  @PostMapping(value = "/login")
+  public Map<String, String> login(@RequestBody UserLogin body) {
+      JwtDetail userLogin = userMapper.login(body.user);
+      Map<String, String> response = new HashMap<>();
+
+      if(userLogin != null) {
+          if(userLogin.user_pass.equals(EncryptUtils.getSHA256Str(body.pass))) {
+              String token = JwtUtils.sign(body.user, userLogin.user_perm, userLogin.user_pass);
+              response.put("token", token);
+
+              return response;
+          } else {
+              throw new UnauthorizedException("用户名或密码错误");
+          }
+      } else {
+          throw new UnauthorizedException("用户名不存在");
+      }
+  }
 }
