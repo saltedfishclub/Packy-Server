@@ -25,6 +25,18 @@
 
 package cc.sfclub.packy.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import cc.sfclub.packy.ex.NotFoundException;
 import cc.sfclub.packy.ex.UnauthorizedException;
 import cc.sfclub.packy.mapper.UserMapper;
 import cc.sfclub.packy.model.JwtDetail;
@@ -32,13 +44,6 @@ import cc.sfclub.packy.model.UserInfo;
 import cc.sfclub.packy.model.UserLogin;
 import cc.sfclub.packy.utils.EncryptUtils;
 import cc.sfclub.packy.utils.JwtUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import cc.sfclub.packy.ex.NotFoundException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author EvanLuo42 2021/7/5 11:51
@@ -50,32 +55,30 @@ public class UserController {
   @Autowired
   private UserMapper userMapper;
 
-  @GetMapping(value = "/{id}")
+  @GetMapping( "/{id}")
   public UserInfo getUserById(@PathVariable int id) {
     UserInfo userInfo = userMapper.getUserById(id);
-
-    if (userInfo == null) {
-      throw new NotFoundException("用户不存在");
-    }
-
+    NotFoundException.notNull(userInfo, "用户不存在");
     return userInfo;
   }
-  @PostMapping(value = "/login")
+
+  @PostMapping("/login")
   public Map<String, String> login(@RequestBody UserLogin body) {
-      JwtDetail userLogin = userMapper.login(body.user);
-      Map<String, String> response = new HashMap<>();
+    JwtDetail userLogin = userMapper.login(body.user);
 
-      if(userLogin != null) {
-          if(userLogin.user_pass.equals(EncryptUtils.getSHA256Str(body.pass))) {
-              String token = JwtUtils.sign(body.user, userLogin.user_perm, userLogin.user_pass);
-              response.put("token", token);
-
-              return response;
-          } else {
-              throw new UnauthorizedException("用户名或密码错误");
-          }
-      } else {
-          throw new UnauthorizedException("用户名不存在");
+    if (userLogin != null) {
+      if (userLogin.user_pass.equals(EncryptUtils.getSHA256Str(body.pass))) {
+        String token = JwtUtils.sign(body.user, userLogin.user_perm, userLogin.user_pass);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        return response;
       }
+      else {
+        throw new UnauthorizedException("用户名或密码错误");
+      }
+    }
+    else {
+      throw new UnauthorizedException("用户名不存在");
+    }
   }
 }
