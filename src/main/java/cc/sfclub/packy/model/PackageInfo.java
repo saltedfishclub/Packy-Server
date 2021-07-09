@@ -25,9 +25,12 @@
 
 package cc.sfclub.packy.model;
 
+import lombok.Data;
+
 /**
  * @author EvanLuo42
- * @date 2021/7/5 6:00 下午
+ * @date 2021/7/9 3:45 下午
  */
+@Data
 public class PackageInfo {
 }

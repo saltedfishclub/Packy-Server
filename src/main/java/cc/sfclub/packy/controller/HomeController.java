@@ -23,18 +23,21 @@
  *
  */
 
-package cc.sfclub.packy.model;
+package cc.sfclub.packy.controller;
 
-import lombok.Builder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/5 9:51 下午
+ * @date 2021/7/5 11:51
  */
-@Builder
-public class UserLogin {
-    /** 用户名 */
-    public String user;
-    /** 密码 */
-    public String pass;
+@RestController
+public class HomeController {
+
+  @GetMapping
+  public String welcome() {
+    return "Welcome to Packy Server.";
+  }
+
 }

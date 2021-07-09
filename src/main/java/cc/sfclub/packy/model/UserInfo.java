@@ -25,29 +25,24 @@
 
 package cc.sfclub.packy.model;
 
-import cc.sfclub.packy.Permission;
 import lombok.Builder;
-import org.springframework.context.annotation.Bean;
+import lombok.Data;
 
-import java.util.Date;
-import java.util.List;
+import java.sql.Timestamp;
 
 /**
- * @author TODAY
- * @date 2021/7/5 12:55
+ * @author EvanLuo42
+ * @date 2021/7/9 4:14 下午
  */
+@Data
 @Builder
 public class UserInfo {
-    /** 用户名 */
-    public String name;
-    /** 注册时间*/
-    public Date joinTime;
-    /** 发布的包 */
-    public List<PackageInfo> publishedPackages;
-    /** 个人简介 */
-    public String bio;
-    /** 邮箱 */
-    public String email;
-    /** 权限 */
-    public Permission permissionLevel;
+    private String userName;
+    private Timestamp joinTime;
+    private String email;
+    private String perm;
+    private String packages;
+    private String bio;
+    private String captcha;
+    private boolean checkedEmail;
 }

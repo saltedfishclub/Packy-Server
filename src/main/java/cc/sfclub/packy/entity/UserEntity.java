@@ -23,14 +23,49 @@
  *
  */
 
-package cc.sfclub.packy.model;
+package cc.sfclub.packy.entity;
+
+import lombok.Data;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/5 10:18 下午
+ * @date 2021/7/9 3:20 下午
  */
-public class JwtDetail {
-    public String user_name;
-    public String user_pass;
-    public String user_perm;
+@Data
+@Entity
+@Table(name = "packy_users")
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "user_pass")
+    private String password;
+
+    @Column(name = "user_join_time")
+    private Timestamp joinTime;
+
+    @Column(name = "user_email")
+    private String email;
+
+    @Column(name = "user_perm")
+    private String perm;
+
+    @Column(name = "user_publish_pkgs")
+    private String packages;
+
+    @Column(name = "user_bio")
+    private String bio;
+
+    @Column(name = "user_captcha")
+    private String captcha;
+
+    @Column(name = "user_checked_email")
+    private boolean emailChecked;
 }

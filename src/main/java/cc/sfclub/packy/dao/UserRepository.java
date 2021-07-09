@@ -23,21 +23,23 @@
  *
  */
 
-package cc.sfclub.packy.controllers;
+package cc.sfclub.packy.dao;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import cc.sfclub.packy.entity.UserEntity;
+import cc.sfclub.packy.model.UserInfo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/5 11:51
+ * @date 2021/7/9 3:56 下午
  */
-@RestController
-public class HomeController {
-
-  @GetMapping
-  public String welcome() {
-    return "Welcome to Packy Server.";
-  }
-
+@Repository
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio,users.captcha,users.emailChecked) from UserEntity as users")
+    List<UserInfo> getAllUsers();
 }

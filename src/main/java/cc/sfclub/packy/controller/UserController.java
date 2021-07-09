@@ -23,19 +23,30 @@
  *
  */
 
-package cc.sfclub.packy.utils;
+package cc.sfclub.packy.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Sequence;
+import cc.sfclub.packy.Json;
+import cc.sfclub.packy.dao.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author TODAY
- * @date 2020/11/17 17:44
+ * @author EvanLuo42
+ * @date 2021/7/9 3:20 下午
  */
-public class IDUtils {
+@RestController
+@RequestMapping(value = "/user")
+public class UserController {
+    UserRepository userRepository;
 
-  private static final Sequence sequence = new Sequence();
+    @Autowired
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-  public static long nextId() {
-    return sequence.nextId();
-  }
+    @RequestMapping(value = "/")
+    public Json getAllUsers() {
+        return Json.ok("Query Success", userRepository.getAllUsers());
+    }
 }

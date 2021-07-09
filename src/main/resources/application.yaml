@@ -1,5 +1,5 @@
 server:
-  port: 19028
+  port: 8080
   error:
     whitelabel:
       enabled: false
@@ -31,11 +31,10 @@ spring:
       max-file-size: 1TB
   profiles:
     active: dev
-
-mybatis-plus:
-  configuration:
-    cache-enabled: true
-    use-deprecated-executor: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+      ##physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 logging:
   level:
