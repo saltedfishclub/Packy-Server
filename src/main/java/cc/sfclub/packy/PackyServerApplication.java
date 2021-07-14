@@ -25,15 +25,19 @@ package cc.sfclub.packy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * @author TODAY
  */
 @SpringBootApplication
+@EntityScan("cc.sfclub.packy.entity")
+@EnableJpaRepositories(basePackages = "cc.sfclub.packy.dao")
+@ComponentScan(basePackages = "cc.sfclub.packy.controller")
 public class PackyServerApplication {
-
   public static void main(String[] args) {
     SpringApplication.run(PackyServerApplication.class, args);
   }
-
 }

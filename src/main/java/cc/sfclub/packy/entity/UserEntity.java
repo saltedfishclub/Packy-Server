@@ -40,6 +40,7 @@ import java.sql.Timestamp;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Integer id;
 
     @Column(name = "user_name")
@@ -49,7 +50,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "user_join_time")
-    private Timestamp joinTime;
+    private Long joinTime;
 
     @Column(name = "user_email")
     private String email;

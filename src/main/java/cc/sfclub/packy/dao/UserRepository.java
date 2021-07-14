@@ -40,6 +40,6 @@ import java.util.List;
  */
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio,users.captcha,users.emailChecked) from UserEntity as users")
+    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio,users.emailChecked) from UserEntity as users")
     List<UserInfo> getAllUsers();
 }

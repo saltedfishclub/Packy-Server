@@ -25,6 +25,7 @@
 
 package cc.sfclub.packy.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -35,14 +36,13 @@ import java.sql.Timestamp;
  * @date 2021/7/9 4:14 下午
  */
 @Data
-@Builder
+@AllArgsConstructor
 public class UserInfo {
     private String userName;
-    private Timestamp joinTime;
+    private Long joinTime;
     private String email;
     private String perm;
     private String packages;
     private String bio;
-    private String captcha;
     private boolean checkedEmail;
 }
