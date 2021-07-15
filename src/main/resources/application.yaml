@@ -34,7 +34,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      ##physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 logging:
   level:

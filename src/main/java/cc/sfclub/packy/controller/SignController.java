@@ -27,27 +27,50 @@ package cc.sfclub.packy.controller;
 
 import cc.sfclub.packy.Json;
 import cc.sfclub.packy.dao.UserRepository;
+import cc.sfclub.packy.entity.UserEntity;
+import cc.sfclub.packy.model.LoginReqBody;
+import cc.sfclub.packy.utils.EncryptUtils;
+import cc.sfclub.packy.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.logging.Logger;
+
 /**
  * @author EvanLuo42
- * @date 2021/7/9 3:20 下午
+ * @date 2021/7/15 2:20 下午
  */
 @RestController
-@RequestMapping(value = "/user")
-public class UserController {
+public class SignController {
     UserRepository userRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
+    public SignController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Json getAllUsers() {
-        return Json.ok("Query Success.", userRepository.getAllUsers());
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Json login(@RequestBody LoginReqBody loginReqBody) {
+        String userName = loginReqBody.getName();
+        String passwordEncrypted = EncryptUtils.getSHA256Str(loginReqBody.getPass());
+        UserEntity userEntitiesQuery = userRepository.queryByUserName(loginReqBody.getName());
+
+        try {
+            if (userEntitiesQuery.getPassword().equals(passwordEncrypted)) {
+                String token = JwtUtils.sign(userName, userEntitiesQuery.getPerm(), passwordEncrypted);
+                HashMap<String, String> data = new HashMap<>();
+                data.put("token", token);
+
+                return Json.ok("Login Successfully.", data);
+            } else {
+                return Json.failed("Username or password incorrect");
+            }
+        } catch (Exception exception) {
+            return Json.failed("Username or password incorrect.");
+        }
     }
 }

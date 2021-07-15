@@ -23,27 +23,16 @@
  *
  */
 
-package cc.sfclub.packy.dao;
+package cc.sfclub.packy.model;
 
-
-import cc.sfclub.packy.entity.UserEntity;
-import cc.sfclub.packy.model.UserInfo;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import lombok.Data;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/9 3:56 下午
+ * @date 2021/7/15 2:21 下午
  */
-@Repository
-@Transactional
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio,users.emailChecked) from UserEntity as users")
-    List<UserInfo> getAllUsers();
-
-    UserEntity queryByUserName(String userName);
+@Data
+public class LoginReqBody {
+    String name;
+    String pass;
 }
