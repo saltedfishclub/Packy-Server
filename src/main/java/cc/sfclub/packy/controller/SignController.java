@@ -61,7 +61,12 @@ public class SignController {
 
         try {
             if (userEntitiesQuery.getPassword().equals(passwordEncrypted)) {
-                String token = JwtUtils.sign(userName, userEntitiesQuery.getPerm(), passwordEncrypted);
+                String token = JwtUtils.sign(
+                        userName,
+                        userEntitiesQuery.getPerm(),
+                        passwordEncrypted
+                );
+
                 HashMap<String, String> data = new HashMap<>();
                 data.put("token", token);
 

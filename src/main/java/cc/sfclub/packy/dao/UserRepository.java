@@ -30,6 +30,7 @@ import cc.sfclub.packy.entity.UserEntity;
 import cc.sfclub.packy.model.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,4 +47,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserInfo> getAllUsers();
 
     UserEntity queryByUserName(String userName);
+
+    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio,users.emailChecked) from UserEntity as users where users.id=:id")
+    UserInfo getUserById(@Param("id") Integer id);
 }

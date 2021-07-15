@@ -50,12 +50,13 @@ public class JwtUtils {
    * @Param secret
    * @Return boolean
    */
-  public static boolean verify(String token, String username, String secret) {
+  public static boolean verify(String token, String userName, String userPerm, String secret) {
     try {
       // 设置加密算法
       Algorithm algorithm = Algorithm.HMAC256(secret);
       JWTVerifier verifier = JWT.require(algorithm)
-              .withClaim("username", username)
+              .withClaim("user_name", userName)
+              .withClaim("user_perm", userPerm)
               .build();
       // 效验TOKEN
       DecodedJWT jwt = verifier.verify(token);
@@ -91,14 +92,14 @@ public class JwtUtils {
    * @Return java.lang.String
    */
   public static String getUserNameByToken(HttpServletRequest request) {
-    String token = request.getHeader("Authorization");
+    String token = request.getHeader("token");
     DecodedJWT jwt = JWT.decode(token);
 
     return jwt.getClaim("user_name").asString();
   }
 
   public static String getUserPermByToken(HttpServletRequest request) {
-    String token = request.getHeader("Authorization");
+    String token = request.getHeader("token");
     DecodedJWT jwt = JWT.decode(token);
 
     return jwt.getClaim("user_perm").asString();

@@ -26,6 +26,8 @@
 package cc.sfclub.packy.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -34,10 +36,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HomeController {
-
-  @GetMapping
+  @RequestMapping(value = "/", method = RequestMethod.GET)
   public String welcome() {
     return "Welcome to Packy Server.";
   }
 
+  @RequestMapping(value = "/test", method = RequestMethod.GET)
+  public String test() {
+    return "test";
+  }
 }

@@ -33,9 +33,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author TODAY
  */
 @SpringBootApplication
-@EntityScan("cc.sfclub.packy.entity")
+@EntityScan(basePackages = "cc.sfclub.packy.entity")
 @EnableJpaRepositories(basePackages = "cc.sfclub.packy.dao")
 @ComponentScan(basePackages = "cc.sfclub.packy.controller")
+@ComponentScan(basePackages = "cc.sfclub.packy.config")
 public class PackyServerApplication {
   public static void main(String[] args) {
     SpringApplication.run(PackyServerApplication.class, args);

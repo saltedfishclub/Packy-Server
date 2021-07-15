@@ -27,10 +27,10 @@ package cc.sfclub.packy.controller;
 
 import cc.sfclub.packy.Json;
 import cc.sfclub.packy.dao.UserRepository;
+import cc.sfclub.packy.entity.UserEntity;
+import cc.sfclub.packy.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author EvanLuo42
@@ -48,6 +48,17 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Json getAllUsers() {
-        return Json.ok("Query Success.", userRepository.getAllUsers());
+        return Json.ok("Query Successfully.", userRepository.getAllUsers());
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Json getUserById(@PathVariable Integer id) {
+        UserInfo user = userRepository.getUserById(id);
+
+        if (user != null) {
+            return Json.ok("Query Successfully", user);
+        } else {
+            return Json.failed("User not found");
+        }
     }
 }
