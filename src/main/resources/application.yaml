@@ -40,3 +40,8 @@ spring:
 logging:
   level:
     root: debug
+
+captcha:
+  host: smtp.163.com
+  from: luo_evan@163.com
+  auth-key: EXMHKEYHEHEZSVQS

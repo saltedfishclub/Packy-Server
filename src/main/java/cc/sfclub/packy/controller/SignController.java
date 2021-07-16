@@ -29,16 +29,21 @@ import cc.sfclub.packy.Json;
 import cc.sfclub.packy.dao.UserRepository;
 import cc.sfclub.packy.entity.UserEntity;
 import cc.sfclub.packy.model.LoginReqBody;
+import cc.sfclub.packy.model.RegisterReqBody;
+import cc.sfclub.packy.service.CaptchaSendService;
+import cc.sfclub.packy.service.LoginService;
 import cc.sfclub.packy.utils.EncryptUtils;
 import cc.sfclub.packy.utils.JwtUtils;
+import cc.sfclub.packy.utils.UuidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.logging.Logger;
+import java.util.Map;
 
 /**
  * @author EvanLuo42
@@ -47,35 +52,63 @@ import java.util.logging.Logger;
 @RestController
 public class SignController {
     UserRepository userRepository;
+    LoginService loginService;
+    CaptchaSendService captchaSendService;
+    Environment env;
 
     @Autowired
-    public SignController(UserRepository userRepository) {
+    public SignController(UserRepository userRepository, LoginService loginService, CaptchaSendService captchaSendService, Environment env) {
         this.userRepository = userRepository;
+        this.loginService = loginService;
+        this.captchaSendService = captchaSendService;
+        this.env = env;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Json login(@RequestBody LoginReqBody loginReqBody) {
-        String userName = loginReqBody.getName();
-        String passwordEncrypted = EncryptUtils.getSHA256Str(loginReqBody.getPass());
-        UserEntity userEntitiesQuery = userRepository.queryByUserName(loginReqBody.getName());
+    public Json login(@RequestBody LoginReqBody reqBody) {
+        String userName = reqBody.getName();
+        String passwordEncrypted = EncryptUtils.getSHA256Str(reqBody.getPass());
+        UserEntity userEntitiesQuery = userRepository.queryByUserName(reqBody.getName());
+
+        if (loginService.login(userName, passwordEncrypted, userEntitiesQuery)) {
+            Map<String, String> data = new HashMap<>();
+            data.put("token", JwtUtils.sign(userName, userEntitiesQuery.getPerm(), passwordEncrypted));
+
+            return Json.ok("Login Successfully", data);
+        }
+
+        return Json.notFound("Username or password incorrect");
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public Json register(@RequestBody RegisterReqBody reqBody) {
+        String userName = reqBody.getName();
+        String passwordEncrypted = EncryptUtils.getSHA256Str(reqBody.getPass());
+        String email = reqBody.getEmail();
+        String captcha = UuidUtils.getUUID32();
+
+        UserEntity userEntity = UserEntity.builder()
+                .userName(userName)
+                .password(passwordEncrypted)
+                .email(email)
+                .joinTime(System.currentTimeMillis())
+                .captcha(captcha)
+                .build();
 
         try {
-            if (userEntitiesQuery.getPassword().equals(passwordEncrypted)) {
-                String token = JwtUtils.sign(
-                        userName,
-                        userEntitiesQuery.getPerm(),
-                        passwordEncrypted
-                );
-
-                HashMap<String, String> data = new HashMap<>();
-                data.put("token", token);
-
-                return Json.ok("Login Successfully.", data);
-            } else {
-                return Json.failed("Username or password incorrect");
+            userRepository.save(userEntity);
+            if (captchaSendService.sendCaptcha(
+                    email,
+                    env.getProperty("captcha.from"),
+                    env.getProperty("captcha.host"),
+                    env.getProperty("captcha.auth-key"),
+                    captcha)) {
+                return Json.ok("Register Successfully");
             }
-        } catch (Exception exception) {
-            return Json.failed("Username or password incorrect.");
+
+            return Json.failed("Send captcha failed.");
+        } catch (Exception e) {
+            return Json.badRequest("This username has been used.");
         }
     }
 }

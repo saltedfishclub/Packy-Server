@@ -20,26 +20,36 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
-package cc.sfclub.packy;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+package cc.sfclub.packy.service;
+
+import cc.sfclub.packy.entity.UserEntity;
+import cc.sfclub.packy.utils.JwtUtils;
+import org.springframework.stereotype.Service;
 
 /**
- * @author TODAY
+ * @author EvanLuo42
+ * @date 2021/7/16 4:14 下午
  */
-@SpringBootApplication
-@EntityScan(basePackages = "cc.sfclub.packy.entity")
-@EnableJpaRepositories(basePackages = "cc.sfclub.packy.dao")
-@ComponentScan(basePackages = "cc.sfclub.packy.controller")
-@ComponentScan(basePackages = "cc.sfclub.packy.config")
-@ComponentScan(basePackages = "cc.sfclub.packy.service")
-public class PackyServerApplication {
-  public static void main(String[] args) {
-    SpringApplication.run(PackyServerApplication.class, args);
-  }
+@Service
+public class LoginService {
+    public boolean login(String userName, String password, UserEntity userEntity) {
+        try {
+            if (userEntity.getPassword().equals(password)) {
+                String token = JwtUtils.sign(
+                        userName,
+                        userEntity.getPerm(),
+                        password
+                );
+
+                return true;
+            }
+        } catch (Exception exception) {
+            return false;
+        }
+
+        return false;
+    }
 }

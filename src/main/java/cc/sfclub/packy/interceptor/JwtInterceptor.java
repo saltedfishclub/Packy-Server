@@ -36,6 +36,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 
 /**
  * @author EvanLuo42
@@ -69,18 +70,18 @@ public class JwtInterceptor implements HandlerInterceptor {
             } else {
                 response.setCharacterEncoding("utf-8");
                 response.setContentType("application/json; charset=utf-8");
-                response.setStatus(502);
+                response.setStatus(401);
                 PrintWriter writer = response.getWriter();
 
-                writer.write(Json.failed("Token not found.").toString());
+                writer.write(Json.notFound("Token not found.").toString());
             }
         } catch (Exception e) {
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json; charset=utf-8");
-            response.setStatus(502);
+            response.setStatus(401);
             PrintWriter writer = response.getWriter();
 
-            writer.write(Json.failed("Token incorrect.").toString());
+            writer.write(Json.unauthorized("Token incorrect.").toString());
         }
 
         return false;

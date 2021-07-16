@@ -27,13 +27,10 @@ package cc.sfclub.packy.service;
 
 import org.springframework.stereotype.Service;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 /**
@@ -42,23 +39,29 @@ import java.util.Properties;
  */
 @Service
 public class CaptchaSendService {
-    public boolean sendCaptcha(String to, String from, String host, String captcha) {
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", host);
-        Session session = Session.getDefaultInstance(properties);
-
+    public boolean sendCaptcha(String to, String from, String host, String authKey, String captcha) {
         try {
-            MimeMessage message = new MimeMessage(session);
+            Properties props = new Properties();
+            props.setProperty("mail.smtp.auth", "true");
+            props.setProperty("mail.transport.protocol", "smtp");
+            props.setProperty("mail.smtp.host", host);
+            Session session = Session.getInstance(props);
+            session.setDebug(true);
+            Message msg = new MimeMessage(session);
+            Transport transport = session.getTransport();
 
-            message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject("Packy: 邮箱验证码");
-            message.setText(captcha);
+            msg.setFrom(new InternetAddress(from, "Packy Group", "UTF-8"));
+            msg.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to, to, "UTF-8"));
+            msg.setSubject("Packy邮箱验证");
+            msg.setContent("验证码: " + captcha, "text/html;charset=UTF-8");
+            msg.saveChanges();
 
-            Transport.send(message);
+            transport.connect(from, authKey);
+            transport.sendMessage(msg, msg.getAllRecipients());
+            transport.close();
+
             return true;
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return false;
         }
     }

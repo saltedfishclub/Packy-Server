@@ -25,6 +25,7 @@
 
 package cc.sfclub.packy.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -36,6 +37,7 @@ import java.sql.Timestamp;
  */
 @Data
 @Entity
+@Builder
 @Table(name = "packy_users")
 public class UserEntity {
     @Id

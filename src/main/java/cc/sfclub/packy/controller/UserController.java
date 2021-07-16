@@ -58,7 +58,7 @@ public class UserController {
         if (user != null) {
             return Json.ok("Query Successfully", user);
         } else {
-            return Json.failed("User not found");
+            return Json.notFound("User not found");
         }
     }
 }
