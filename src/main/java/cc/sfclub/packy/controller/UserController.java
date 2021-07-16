@@ -27,7 +27,6 @@ package cc.sfclub.packy.controller;
 
 import cc.sfclub.packy.Json;
 import cc.sfclub.packy.dao.UserRepository;
-import cc.sfclub.packy.entity.UserEntity;
 import cc.sfclub.packy.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

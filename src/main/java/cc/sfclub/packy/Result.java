@@ -30,7 +30,5 @@ package cc.sfclub.packy;
  * @date 2020/9/10 11:05
  */
 public interface Result extends Constant {
-
   Object getData();
-
 }

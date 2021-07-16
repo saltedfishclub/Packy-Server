@@ -26,8 +26,6 @@
 package cc.sfclub.packy;
 
 import java.io.Serializable;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author TODAY 2021/7/5 11:51
@@ -40,16 +38,6 @@ public interface Constant extends Serializable {
   String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
   /** 默认日期时间格式 */
   String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-  String KEY_USER_SESSION = "userSession";
-
-  String BLANK = "";
-  long STARTUP_TIME = System.currentTimeMillis();
-
-  String DEFAULT_ENCODING = "UTF-8";
-  Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-
-  String PARAMETER_SIZE = "size";
-  String PARAMETER_CURRENT = "current";
 
   String NOT_FOUND = "Not Found";
   String BAD_REQUEST = "Bad Request";
@@ -60,7 +48,5 @@ public interface Constant extends Serializable {
 
   String OPERATION_OK = "ok";
   String OPERATION_FAILED = "failed";
-
-  int DEFAULT_LIST_SIZE = 10;
 
 }
