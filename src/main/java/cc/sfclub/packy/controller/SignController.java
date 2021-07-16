@@ -30,13 +30,10 @@ import cc.sfclub.packy.dao.UserRepository;
 import cc.sfclub.packy.entity.UserEntity;
 import cc.sfclub.packy.model.LoginReqBody;
 import cc.sfclub.packy.model.RegisterReqBody;
-import cc.sfclub.packy.service.CaptchaSendService;
 import cc.sfclub.packy.service.LoginService;
 import cc.sfclub.packy.utils.EncryptUtils;
 import cc.sfclub.packy.utils.JwtUtils;
-import cc.sfclub.packy.utils.UuidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,15 +50,11 @@ import java.util.Map;
 public class SignController {
     UserRepository userRepository;
     LoginService loginService;
-    CaptchaSendService captchaSendService;
-    Environment env;
 
     @Autowired
-    public SignController(UserRepository userRepository, LoginService loginService, CaptchaSendService captchaSendService, Environment env) {
+    public SignController(UserRepository userRepository, LoginService loginService) {
         this.userRepository = userRepository;
         this.loginService = loginService;
-        this.captchaSendService = captchaSendService;
-        this.env = env;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -85,28 +78,21 @@ public class SignController {
         String userName = reqBody.getName();
         String passwordEncrypted = EncryptUtils.getSHA256Str(reqBody.getPass());
         String email = reqBody.getEmail();
-        String captcha = UuidUtils.getUUID32();
 
         UserEntity userEntity = UserEntity.builder()
                 .userName(userName)
                 .password(passwordEncrypted)
                 .email(email)
                 .joinTime(System.currentTimeMillis())
-                .captcha(captcha)
+                .perm("NORMAL")
                 .build();
 
         try {
             userRepository.save(userEntity);
-            if (captchaSendService.sendCaptcha(
-                    email,
-                    env.getProperty("captcha.from"),
-                    env.getProperty("captcha.host"),
-                    env.getProperty("captcha.auth-key"),
-                    captcha)) {
-                return Json.ok("Register Successfully");
-            }
+            Map<String, String> data = new HashMap<>();
+            data.put("token", JwtUtils.sign(userName, "NORMAL", passwordEncrypted));
 
-            return Json.failed("Send captcha failed.");
+            return Json.ok("Register Successfully", data);
         } catch (Exception e) {
             return Json.badRequest("This username has been used.");
         }

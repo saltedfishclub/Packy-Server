@@ -26,10 +26,7 @@
 package cc.sfclub.packy.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-
-import java.sql.Timestamp;
 
 /**
  * @author EvanLuo42
@@ -44,5 +41,4 @@ public class UserInfo {
     private String perm;
     private String packages;
     private String bio;
-    private boolean checkedEmail;
 }

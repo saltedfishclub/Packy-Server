@@ -43,11 +43,11 @@ import java.util.List;
 @Repository
 @Transactional
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio,users.emailChecked) from UserEntity as users")
+    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio) from UserEntity as users")
     List<UserInfo> getAllUsers();
 
     UserEntity queryByUserName(String userName);
 
-    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio,users.emailChecked) from UserEntity as users where users.id=:id")
+    @Query(value = "select new cc.sfclub.packy.model.UserInfo(users.userName,users.joinTime,users.email,users.perm,users.packages,users.bio) from UserEntity as users where users.id=:id")
     UserInfo getUserById(@Param("id") Integer id);
 }

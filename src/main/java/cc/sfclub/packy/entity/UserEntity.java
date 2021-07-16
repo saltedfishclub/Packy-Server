@@ -29,7 +29,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 /**
  * @author EvanLuo42
@@ -42,22 +41,22 @@ import java.sql.Timestamp;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false, unique = true)
     private Integer id;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", unique = true, nullable = false)
     private String userName;
 
-    @Column(name = "user_pass")
+    @Column(name = "user_pass", nullable = false)
     private String password;
 
-    @Column(name = "user_join_time")
+    @Column(name = "user_join_time", nullable = false)
     private Long joinTime;
 
-    @Column(name = "user_email")
+    @Column(name = "user_email", nullable = false)
     private String email;
 
-    @Column(name = "user_perm")
+    @Column(name = "user_perm", nullable = false)
     private String perm;
 
     @Column(name = "user_publish_pkgs")
@@ -65,10 +64,4 @@ public class UserEntity {
 
     @Column(name = "user_bio")
     private String bio;
-
-    @Column(name = "user_captcha")
-    private String captcha;
-
-    @Column(name = "user_checked_email")
-    private boolean emailChecked;
 }
