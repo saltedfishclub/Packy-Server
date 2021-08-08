@@ -23,41 +23,29 @@
  *
  */
 
-package cc.sfclub.packy.controller;
+package cc.sfclub.packy.service;
 
-import cc.sfclub.packy.Json;
 import cc.sfclub.packy.dao.UserRepository;
-import cc.sfclub.packy.model.UserInfo;
+import cc.sfclub.packy.entity.UserEntity;
+import cc.sfclub.packy.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author EvanLuo42
- * @date 2021/7/9 3:20 下午
+ * @date 2021/8/8 7:10 下午
  */
-@RestController
-@RequestMapping(value = "/user")
-public class UserController {
-    UserRepository userRepository;
-
-    @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Json getAllUsers() {
-        return Json.ok("Query Successfully.", userRepository.getAllUsers());
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Json getUserById(@PathVariable Integer id) {
-        UserInfo user = userRepository.getUserById(id);
-
-        if (user != null) {
-            return Json.ok("Query Successfully", user);
+@Service
+public class RegisterService {
+    public boolean register(UserRepository userRepository, UserEntity userEntity) {
+        try {
+            userRepository.save(userEntity);
+            return true;
+        } catch (Exception exception) {
+            return false;
         }
-
-        return Json.notFound("User not found");
     }
 }

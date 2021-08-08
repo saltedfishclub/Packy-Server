@@ -31,6 +31,7 @@ import cc.sfclub.packy.entity.UserEntity;
 import cc.sfclub.packy.model.LoginReqBody;
 import cc.sfclub.packy.model.RegisterReqBody;
 import cc.sfclub.packy.service.LoginService;
+import cc.sfclub.packy.service.RegisterService;
 import cc.sfclub.packy.utils.EncryptUtils;
 import cc.sfclub.packy.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,13 @@ import java.util.Map;
 public class SignController {
     UserRepository userRepository;
     LoginService loginService;
+    RegisterService registerService;
 
     @Autowired
-    public SignController(UserRepository userRepository, LoginService loginService) {
+    public SignController(UserRepository userRepository, LoginService loginService, RegisterService registerService) {
         this.userRepository = userRepository;
         this.loginService = loginService;
+        this.registerService = registerService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -87,14 +90,13 @@ public class SignController {
                 .perm("NORMAL")
                 .build();
 
-        try {
-            userRepository.save(userEntity);
+        if (registerService.register(userRepository, userEntity)) {
             Map<String, String> data = new HashMap<>();
             data.put("token", JwtUtils.sign(userName, "NORMAL", passwordEncrypted));
 
             return Json.ok("Register Successfully", data);
-        } catch (Exception e) {
-            return Json.badRequest("This username has been used.");
         }
+
+        return Json.badRequest("This username has been used.");
     }
 }
